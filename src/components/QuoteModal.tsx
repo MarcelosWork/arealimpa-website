@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,7 +26,8 @@ interface QuoteModalProps {
 }
 
 interface FormErrors {
-  nome?: string;
+  firstName?: string;
+  lastName?: string;
   telefone?: string;
   email?: string;
   localizacao?: string;
@@ -37,6 +40,7 @@ export function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneValue, setPhoneValue] = useState<string>("+351");
 
   const handleServiceToggle = (serviceSlug: string) => {
     setSelectedServices(prev =>
@@ -52,16 +56,20 @@ export function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
   const validateForm = (formData: FormData): FormErrors => {
     const newErrors: FormErrors = {};
 
-    const nome = formData.get("nome") as string;
-    const telefone = formData.get("telefone") as string;
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
     const email = formData.get("email") as string;
     const localizacao = formData.get("localizacao") as string;
 
-    if (!nome || nome.trim() === "") {
-      newErrors.nome = "Por favor, indique o seu nome";
+    if (!firstName || firstName.trim() === "") {
+      newErrors.firstName = "Por favor, indique o seu nome próprio";
     }
 
-    if (!telefone || telefone.trim() === "") {
+    if (!lastName || lastName.trim() === "") {
+      newErrors.lastName = "Por favor, indique o seu apelido";
+    }
+
+    if (!phoneValue || phoneValue.trim() === "" || phoneValue === "+351") {
       newErrors.telefone = "Por favor, indique o seu telefone";
     }
 
@@ -103,8 +111,9 @@ export function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
 
     try {
       const payload = {
-        nome: formData.get("nome") as string,
-        telefone: formData.get("telefone") as string,
+        firstName: formData.get("firstName") as string,
+        lastName: formData.get("lastName") as string,
+        telefone: phoneValue,
         email: formData.get("email") as string,
         localizacao: formData.get("localizacao") as string,
         tipoCliente: tipoCliente,
@@ -140,6 +149,7 @@ export function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
       setTipoCliente("");
       setSelectedServices([]);
       setErrors({});
+      setPhoneValue("+351");
       onOpenChange(false);
 
     } catch (error) {
@@ -163,32 +173,51 @@ export function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
-          {/* Nome */}
-          <div className="space-y-2">
-            <Label htmlFor="modal-nome">Nome *</Label>
-            <Input
-              id="modal-nome"
-              name="nome"
-              placeholder="O seu nome completo"
-              className={errors.nome ? "border-red-500" : ""}
-              onChange={() => errors.nome && setErrors(prev => ({ ...prev, nome: undefined }))}
-            />
-            {errors.nome && (
-              <p className="text-sm text-red-500">{errors.nome}</p>
-            )}
+          {/* Nome Próprio e Apelido */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="modal-firstName">Nome Próprio *</Label>
+              <Input
+                id="modal-firstName"
+                name="firstName"
+                placeholder="Nome"
+                className={errors.firstName ? "border-red-500" : ""}
+                onChange={() => errors.firstName && setErrors(prev => ({ ...prev, firstName: undefined }))}
+              />
+              {errors.firstName && (
+                <p className="text-sm text-red-500">{errors.firstName}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="modal-lastName">Apelido *</Label>
+              <Input
+                id="modal-lastName"
+                name="lastName"
+                placeholder="Apelido"
+                className={errors.lastName ? "border-red-500" : ""}
+                onChange={() => errors.lastName && setErrors(prev => ({ ...prev, lastName: undefined }))}
+              />
+              {errors.lastName && (
+                <p className="text-sm text-red-500">{errors.lastName}</p>
+              )}
+            </div>
           </div>
 
           {/* Telefone e Email */}
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="modal-telefone">Telefone *</Label>
-              <Input
-                id="modal-telefone"
-                name="telefone"
-                type="tel"
-                placeholder="+351 ..."
-                className={errors.telefone ? "border-red-500" : ""}
-                onChange={() => errors.telefone && setErrors(prev => ({ ...prev, telefone: undefined }))}
+              <PhoneInput
+                international
+                defaultCountry="PT"
+                value={phoneValue}
+                onChange={(value) => {
+                  setPhoneValue(value || "+351");
+                  if (errors.telefone) {
+                    setErrors(prev => ({ ...prev, telefone: undefined }));
+                  }
+                }}
+                className={`flex h-10 w-full rounded-md border ${errors.telefone ? "border-red-500" : "border-input"} bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
               />
               {errors.telefone && (
                 <p className="text-sm text-red-500">{errors.telefone}</p>

@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { nome, telefone, email, localizacao, tipoCliente, servicos, area, observacoes } = body;
+    const { firstName, lastName, telefone, email, localizacao, tipoCliente, servicos, area, observacoes } = body;
 
     // Validações
-    if (!nome || !telefone || !email || !localizacao || !tipoCliente || !servicos || servicos.length === 0) {
+    if (!firstName || !lastName || !telefone || !email || !localizacao || !tipoCliente || !servicos || servicos.length === 0) {
       return NextResponse.json(
         { error: "Campos obrigatórios em falta" },
         { status: 400 }
@@ -29,7 +29,8 @@ export async function POST(request: Request) {
 
     // Preparar payload para API
     const payload = {
-      firstName: nome,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       phone: telefone,
       locationId: process.env.NEXT_PUBLIC_LEADCONNECTOR_LOCATION_ID,
