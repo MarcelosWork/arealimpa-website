@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     }
 
     // Fazer request para API LeadConnector
-    const response = await fetch(process.env.NEXT_PUBLIC_LEADCONNECTOR_API_URL!, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LEADCONNECTOR_API_URL}contacts/`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.LEADCONNECTOR_API_TOKEN}`,
