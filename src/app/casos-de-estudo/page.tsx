@@ -4,17 +4,38 @@ import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 export const metadata = {
-  title: "Casos de Estudo | ÁREALIMPA - Portfolio de Projectos Realizados",
-  description: "Veja os nossos projectos realizados e os resultados obtidos em limpeza de exteriores. Mais de 1500 projectos concluídos com sucesso em todo Portugal.",
-  keywords: ["portfolio", "projectos", "casos de estudo", "trabalhos realizados", "antes e depois", "resultados"],
+  title: "Portfolio de Limpeza de Exteriores - Projetos Antes e Depois",
+  description: "Veja os nossos projetos de limpeza de exteriores: lavagem de telhados, fachadas e pavimentos. Mais de 1500 projetos concluídos com sucesso em todo Portugal. Resultados antes e depois.",
+  keywords: [
+    "portfolio limpeza exteriores",
+    "projectos limpeza",
+    "casos de estudo",
+    "trabalhos realizados",
+    "antes e depois limpeza",
+    "resultados lavagem telhados",
+    "resultados limpeza fachadas",
+    "fotos limpeza exteriores",
+    "exemplos trabalhos",
+    "projectos concluídos",
+  ],
+  alternates: {
+    canonical: "https://arealimpa.com/casos-de-estudo",
+  },
   openGraph: {
-    title: "Casos de Estudo | ÁREALIMPA",
-    description: "Veja os nossos projectos realizados em limpeza de exteriores. Mais de 1500 projectos concluídos.",
+    title: "Portfolio de Limpeza de Exteriores | ÁREALIMPA",
+    description: "Veja os nossos projetos de limpeza de exteriores. Mais de 1500 projetos concluídos em todo Portugal.",
+    url: "https://arealimpa.com/casos-de-estudo",
     type: "website",
   },
 };
+
+const breadcrumbItems = [
+  { name: "Início", url: "https://arealimpa.com" },
+  { name: "Casos de Estudo", url: "https://arealimpa.com/casos-de-estudo" },
+];
 
 // Mock data para casos de estudo
 const caseStudies = [
@@ -71,6 +92,9 @@ const caseStudies = [
 export default function CasosDeEstudoPage() {
   return (
     <div className="flex flex-col">
+      {/* SEO Schema */}
+      <BreadcrumbSchema items={breadcrumbItems} />
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#1e3a5f] via-[#2563eb] to-[#3b82f6] text-white py-20">
         <div className="container mx-auto px-4">
@@ -120,7 +144,7 @@ export default function CasosDeEstudoPage() {
                 <div className="aspect-[4/3] overflow-hidden relative">
                   <Image
                     src={study.image}
-                    alt={study.title}
+                    alt={`${study.title} - ${study.service} em ${study.location} - ÁREALIMPA`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

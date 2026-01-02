@@ -23,7 +23,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <Image
             src="/uploads/e3zkbms10dla66xdfczu.jpg"
-            alt="Especialista em limpeza de exteriores"
+            alt="ÁREALIMPA - Especialistas em limpeza de exteriores profissional em Portugal. Lavagem de telhados, fachadas e pavimentos."
             fill
             priority
             className="object-cover"
@@ -143,7 +143,7 @@ export default function Home() {
                 <div className="aspect-video overflow-hidden relative">
                   <Image
                     src={service.image}
-                    alt={service.title}
+                    alt={`${service.title} - Serviço profissional de limpeza de exteriores ÁREALIMPA em Portugal`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

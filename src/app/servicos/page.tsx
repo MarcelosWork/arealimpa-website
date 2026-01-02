@@ -6,23 +6,32 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 import { services } from "@/lib/data";
+
+const breadcrumbItems = [
+  { name: "Início", url: "https://arealimpa.com" },
+  { name: "Serviços de Limpeza de Exteriores", url: "https://arealimpa.com/servicos" },
+];
 
 export default function ServicosPage() {
   return (
     <div className="flex flex-col">
+      {/* SEO Schema */}
+      <BreadcrumbSchema items={breadcrumbItems} />
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#1e3a5f] via-[#2563eb] to-[#3b82f6] text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <Badge className="mb-4 bg-white/20 text-white border-white/30" variant="outline">
-              Soluções Profissionais
+              Soluções Profissionais de Limpeza
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Os Nossos Serviços
+              Serviços de Limpeza de Exteriores Profissional
             </h1>
             <p className="text-xl md:text-2xl text-blue-100">
-              Oferecemos uma gama completa de serviços de limpeza de exteriores com equipamento de última geração
+              Lavagem de telhados, fachadas, pavimentos e muito mais. Equipamento de última geração e técnicas especializadas como SoftWash e Hidroblast.
             </p>
           </div>
         </div>
@@ -40,7 +49,7 @@ export default function ServicosPage() {
                 <div className="aspect-video overflow-hidden relative">
                   <Image
                     src={service.image}
-                    alt={service.title}
+                    alt={`${service.title} - Serviço profissional de limpeza de exteriores ÁREALIMPA`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -82,10 +91,10 @@ export default function ServicosPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Precisa de um Orçamento?
+              Precisa de um Orçamento para Limpeza de Exteriores?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              Contacte-nos hoje e receba um orçamento gratuito e sem compromisso
+              Contacte-nos hoje e receba um orçamento gratuito e sem compromisso para lavagem de telhados, fachadas ou pavimentos
             </p>
             <Button
               asChild
@@ -93,7 +102,7 @@ export default function ServicosPage() {
               className="bg-white text-blue-900 hover:bg-blue-50 text-lg"
             >
               <Link href="/contactos">
-                Pedir Orçamento <ArrowRight className="ml-2 h-5 w-5" />
+                Pedir Orçamento Gratuito <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>

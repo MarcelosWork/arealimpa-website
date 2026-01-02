@@ -2,21 +2,45 @@ import { CheckCircle2, Award, Users, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { companyInfo } from "@/lib/data";
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
 export const metadata = {
-  title: "A Empresa | ÁREALIMPA - Especialistas em Limpeza desde 2006",
-  description: "Conheça a Árealimpa, especialista em limpeza de exteriores desde 2006. Missão, visão e valores da nossa empresa. Equipa qualificada e equipamento de última geração.",
-  keywords: ["sobre arealimpa", "empresa limpeza", "história", "valores", "missão", "equipa profissional"],
+  title: "Sobre a ÁREALIMPA - Especialistas em Limpeza de Exteriores desde 2006",
+  description: "Conheça a Árealimpa, empresa especialista em limpeza de exteriores desde 2006. Mais de 1500 projetos concluídos, 200+ clientes satisfeitos. Equipa qualificada, equipamento de última geração e cobertura nacional.",
+  keywords: [
+    "sobre arealimpa",
+    "empresa limpeza exteriores",
+    "história arealimpa",
+    "quem somos",
+    "valores empresa limpeza",
+    "equipa profissional limpeza",
+    "limpeza exteriores portugal",
+    "empresa póvoa de varzim",
+    "especialistas limpeza",
+    "experiência limpeza exteriores",
+  ],
+  alternates: {
+    canonical: "https://arealimpa.com/a-empresa",
+  },
   openGraph: {
-    title: "A Empresa | ÁREALIMPA",
-    description: "Especialistas em limpeza de exteriores desde 2006. Conheça a nossa missão, visão e valores.",
+    title: "Sobre a ÁREALIMPA - Especialistas em Limpeza de Exteriores",
+    description: "Empresa especialista em limpeza de exteriores desde 2006. Mais de 1500 projetos concluídos em todo Portugal.",
+    url: "https://arealimpa.com/a-empresa",
     type: "website",
   },
 };
 
+const breadcrumbItems = [
+  { name: "Início", url: "https://arealimpa.com" },
+  { name: "A Empresa", url: "https://arealimpa.com/a-empresa" },
+];
+
 export default function AEmpresaPage() {
   return (
     <div className="flex flex-col">
+      {/* SEO Schema */}
+      <BreadcrumbSchema items={breadcrumbItems} />
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#1e3a5f] via-[#2563eb] to-[#3b82f6] text-white py-20">
         <div className="container mx-auto px-4">

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { QuoteModal } from "@/components/QuoteModal";
+import { ServiceSchema, BreadcrumbSchema } from "@/components/StructuredData";
 import { services } from "@/lib/data";
 
 export default function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -25,8 +26,18 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
 
+  const breadcrumbItems = [
+    { name: "Início", url: "https://arealimpa.com" },
+    { name: "Serviços", url: "https://arealimpa.com/servicos" },
+    { name: service.title, url: `https://arealimpa.com/servicos/${service.slug}` },
+  ];
+
   return (
     <div className="flex flex-col">
+      {/* SEO Schemas */}
+      <ServiceSchema service={service} />
+      <BreadcrumbSchema items={breadcrumbItems} />
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#1e3a5f] via-[#2563eb] to-[#3b82f6] text-white py-20">
         <div className="container mx-auto px-4">
@@ -98,7 +109,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                       <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                         <Image
                           src={`/uploads/telhado-antes-${num}.jpg`}
-                          alt={`Telhado antes da lavagem ${num}`}
+                          alt={`Telhado com musgo e fungos antes da lavagem profissional - Exemplo ${num}`}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
@@ -114,7 +125,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                       <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                         <Image
                           src={`/uploads/telhado-depois-${num}.jpg`}
-                          alt={`Telhado depois da lavagem ${num}`}
+                          alt={`Telhado limpo após lavagem profissional SoftWash - Exemplo ${num}`}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
@@ -165,7 +176,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                       <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                         <Image
                           src={`/uploads/fachada-antes-${num}.jpg`}
-                          alt={`Fachada antes da limpeza ${num}`}
+                          alt={`Fachada com manchas e sujidade antes da limpeza profissional - Exemplo ${num}`}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
@@ -181,7 +192,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                       <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                         <Image
                           src={`/uploads/fachada-depois-${num}.jpg`}
-                          alt={`Fachada depois da limpeza ${num}`}
+                          alt={`Fachada limpa e renovada após limpeza profissional - Exemplo ${num}`}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
@@ -230,7 +241,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                   <div key={num} className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg group">
                     <Image
                       src={`/uploads/construcao-civil-${num}.jpg`}
-                      alt={`Trabalho de construção civil ${num}`}
+                      alt={`Trabalho de construção civil e reparação exterior - Exemplo ${num}`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -273,7 +284,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                     <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                       <Image
                         src="/uploads/pavimento-antes-1.jpg"
-                        alt="Pavimento antes da limpeza"
+                        alt="Pavimento exterior sujo antes da limpeza profissional"
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 50vw"
@@ -289,7 +300,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                     <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                       <Image
                         src="/uploads/pavimento-depois-1.jpg"
-                        alt="Pavimento depois da limpeza"
+                        alt="Pavimento exterior limpo após limpeza profissional com alta pressão"
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 50vw"
@@ -337,7 +348,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                   <div key={num} className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg group">
                     <Image
                       src={`/uploads/equipamento-${num}.jpg`}
-                      alt={`Equipamento ${num}`}
+                      alt={`Plataforma elevatória profissional para aluguer - Equipamento ${num}`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -421,7 +432,7 @@ export default function ServicePage({ params }: { params: Promise<{ slug: string
                 <div className="aspect-video overflow-hidden relative">
                   <Image
                     src={relatedService.image}
-                    alt={relatedService.title}
+                    alt={`${relatedService.title} - Serviço profissional ÁREALIMPA`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

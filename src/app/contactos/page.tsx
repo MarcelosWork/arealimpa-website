@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import { BreadcrumbSchema } from "@/components/StructuredData";
 
-// Metadata will be added by parent layout
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,7 +17,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { companyInfo, services } from "@/lib/data";
 
 interface FormErrors {
-  nome?: string;
+  firstName?: string;
+  lastName?: string;
   telefone?: string;
   email?: string;
   localizacao?: string;
@@ -23,11 +26,17 @@ interface FormErrors {
   servicos?: string;
 }
 
+const breadcrumbItems = [
+  { name: "Início", url: "https://arealimpa.com" },
+  { name: "Pedir Orçamento", url: "https://arealimpa.com/contactos" },
+];
+
 export default function ContactosPage() {
   const [tipoCliente, setTipoCliente] = useState("");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneValue, setPhoneValue] = useState<string>("+351");
 
   const handleServiceToggle = (serviceSlug: string) => {
     setSelectedServices(prev =>
@@ -43,16 +52,20 @@ export default function ContactosPage() {
   const validateForm = (formData: FormData): FormErrors => {
     const newErrors: FormErrors = {};
 
-    const nome = formData.get("nome") as string;
-    const telefone = formData.get("telefone") as string;
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
     const email = formData.get("email") as string;
     const localizacao = formData.get("localizacao") as string;
 
-    if (!nome || nome.trim() === "") {
-      newErrors.nome = "Por favor, indique o seu nome";
+    if (!firstName || firstName.trim() === "") {
+      newErrors.firstName = "Por favor, indique o seu nome próprio";
     }
 
-    if (!telefone || telefone.trim() === "") {
+    if (!lastName || lastName.trim() === "") {
+      newErrors.lastName = "Por favor, indique o seu apelido";
+    }
+
+    if (!phoneValue || phoneValue.trim() === "" || phoneValue === "+351") {
       newErrors.telefone = "Por favor, indique o seu telefone";
     }
 
@@ -71,7 +84,7 @@ export default function ContactosPage() {
     }
 
     if (selectedServices.length === 0) {
-      newErrors.servicos = "Por favor, selecione pelo menos um serviço";
+      newErrors.servicos = "Por favor, selecice pelo menos um serviço";
     }
 
     return newErrors;
@@ -94,8 +107,9 @@ export default function ContactosPage() {
 
     try {
       const payload = {
-        nome: formData.get("nome") as string,
-        telefone: formData.get("telefone") as string,
+        firstName: formData.get("firstName") as string,
+        lastName: formData.get("lastName") as string,
+        telefone: phoneValue,
         email: formData.get("email") as string,
         localizacao: formData.get("localizacao") as string,
         tipoCliente: tipoCliente,
@@ -132,6 +146,7 @@ export default function ContactosPage() {
       setTipoCliente("");
       setSelectedServices([]);
       setErrors({});
+      setPhoneValue("+351");
 
     } catch (error) {
       console.error("Error:", error);
@@ -145,15 +160,18 @@ export default function ContactosPage() {
 
   return (
     <div className="flex flex-col">
+      {/* SEO Schema */}
+      <BreadcrumbSchema items={breadcrumbItems} />
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[#1e3a5f] via-[#2563eb] to-[#3b82f6] text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Pedir Orçamento
+              Pedir Orçamento de Limpeza de Exteriores
             </h1>
             <p className="text-xl md:text-2xl text-blue-100">
-              Preencha o formulário e receba um orçamento gratuito e sem compromisso
+              Preencha o formulário e receba um orçamento gratuito e sem compromisso em 24 horas. Lavagem de telhados, fachadas e pavimentos em todo Portugal.
             </p>
           </div>
         </div>
@@ -226,21 +244,38 @@ export default function ContactosPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Nome */}
-                  <div className="space-y-2">
-                    <Label htmlFor="nome" className="text-base">
-                      Nome *
-                    </Label>
-                    <Input
-                      id="nome"
-                      name="nome"
-                      placeholder="O seu nome completo"
-                      className={`h-12 ${errors.nome ? "border-red-500" : ""}`}
-                      onChange={() => errors.nome && setErrors(prev => ({ ...prev, nome: undefined }))}
-                    />
-                    {errors.nome && (
-                      <p className="text-sm text-red-500">{errors.nome}</p>
-                    )}
+                  {/* Nome Próprio e Apelido */}
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="text-base">
+                        Nome Próprio *
+                      </Label>
+                      <Input
+                        id="firstName"
+                        name="firstName"
+                        placeholder="Nome"
+                        className={`h-12 ${errors.firstName ? "border-red-500" : ""}`}
+                        onChange={() => errors.firstName && setErrors(prev => ({ ...prev, firstName: undefined }))}
+                      />
+                      {errors.firstName && (
+                        <p className="text-sm text-red-500">{errors.firstName}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="text-base">
+                        Apelido *
+                      </Label>
+                      <Input
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Apelido"
+                        className={`h-12 ${errors.lastName ? "border-red-500" : ""}`}
+                        onChange={() => errors.lastName && setErrors(prev => ({ ...prev, lastName: undefined }))}
+                      />
+                      {errors.lastName && (
+                        <p className="text-sm text-red-500">{errors.lastName}</p>
+                      )}
+                    </div>
                   </div>
 
                   {/* Telefone e Email */}
@@ -249,13 +284,17 @@ export default function ContactosPage() {
                       <Label htmlFor="telefone" className="text-base">
                         Telefone *
                       </Label>
-                      <Input
-                        id="telefone"
-                        name="telefone"
-                        type="tel"
-                        placeholder="+351 ..."
-                        className={`h-12 ${errors.telefone ? "border-red-500" : ""}`}
-                        onChange={() => errors.telefone && setErrors(prev => ({ ...prev, telefone: undefined }))}
+                      <PhoneInput
+                        international
+                        defaultCountry="PT"
+                        value={phoneValue}
+                        onChange={(value) => {
+                          setPhoneValue(value || "+351");
+                          if (errors.telefone) {
+                            setErrors(prev => ({ ...prev, telefone: undefined }));
+                          }
+                        }}
+                        className={`flex h-12 w-full rounded-md border ${errors.telefone ? "border-red-500" : "border-input"} bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
                       />
                       {errors.telefone && (
                         <p className="text-sm text-red-500">{errors.telefone}</p>
