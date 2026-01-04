@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       lastName: lastName,
       email: email,
       phone: telefone,
+      source: "website",
       locationId: process.env.NEXT_PUBLIC_LEADCONNECTOR_LOCATION_ID,
       customFields: [
         { key: "localizacao", value: localizacao },
