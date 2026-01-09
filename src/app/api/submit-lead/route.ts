@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       locationId: process.env.NEXT_PUBLIC_LEADCONNECTOR_LOCATION_ID,
       customFields: [
         { key: "localizacao", value: localizacao },
-        { key: "tipo_de_cliente", value: tipoCliente.toLowerCase() === "particular" ? "P" : "E" },
+        { key: "tipo_de_cliente", value: tipoCliente },
         { key: "servios_pretendidos", value: servicosFormatados }
       ]
     };
